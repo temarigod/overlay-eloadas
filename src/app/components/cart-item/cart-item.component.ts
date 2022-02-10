@@ -59,6 +59,7 @@ export class CartItemComponent implements OnInit, OnDestroy {
             offsetY: 10,
           },
         ]),
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
     });
   }
 
