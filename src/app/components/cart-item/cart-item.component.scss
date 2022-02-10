@@ -2,6 +2,10 @@
   display: block;
   border: 1px solid black;
   position: relative;
+
+  &.editor-open {
+    box-shadow: 0px 0px 3px 5px inset yellow;
+  }
 }
 
 app-cart-item-description-editor {
