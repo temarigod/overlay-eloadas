@@ -66,6 +66,12 @@ export class CartItemComponent implements OnInit, OnDestroy {
           },
         ]),
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      hasBackdrop: true,
+    });
+
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.descriptionEditorIsOpen = false;
+      this.overlayRef.detach();
     });
   }
 
