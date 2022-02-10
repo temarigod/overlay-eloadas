@@ -1,4 +1,8 @@
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import {
+  FlexibleConnectedPositionStrategy,
+  Overlay,
+  OverlayRef,
+} from '@angular/cdk/overlay';
 import {
   CdkPortal,
   CdkPortalOutlet,
@@ -38,10 +42,24 @@ export class CartItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly overlay: Overlay,
+    private readonly elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
-    this.overlayRef = this.overlay.create({});
+    this.overlayRef = this.overlay.create({
+      positionStrategy: this.overlay
+        .position()
+        .flexibleConnectedTo(this.elementRef.nativeElement)
+        .withPositions([
+          {
+            originX: 'center',
+            originY: 'top',
+            overlayX: 'center',
+            overlayY: 'bottom',
+            offsetY: 10,
+          },
+        ]),
+    });
   }
 
   toggleDescriptionEditor(): void {
