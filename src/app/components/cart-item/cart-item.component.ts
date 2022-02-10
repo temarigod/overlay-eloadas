@@ -1,3 +1,4 @@
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import {
   CdkPortal,
   CdkPortalOutlet,
@@ -9,6 +10,7 @@ import {
   ApplicationRef,
   Component,
   ComponentFactoryResolver,
+  ElementRef,
   HostBinding,
   Injector,
   Input,
@@ -24,43 +26,36 @@ import {
   styleUrls: ['./cart-item.component.scss'],
 })
 export class CartItemComponent implements OnInit, OnDestroy {
-  @ViewChild(CdkPortal) editorPortal!: CdkPortal;
-
   @Input() name!: string;
   description = '';
 
   @HostBinding('class.editor-open')
   descriptionEditorIsOpen: boolean = false;
 
-  private portalOutlet!: PortalOutlet;
+  private overlayRef!: OverlayRef;
+
+  @ViewChild(CdkPortal) editorPortal!: CdkPortal;
 
   constructor(
-    private readonly cfr: ComponentFactoryResolver,
-    private readonly appRef: ApplicationRef,
-    private readonly injector: Injector
+    private readonly overlay: Overlay,
   ) {}
 
   ngOnInit(): void {
-    this.portalOutlet = new DomPortalOutlet(
-      document.body,
-      this.cfr,
-      this.appRef,
-      this.injector
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.portalOutlet.detach();
-    this.portalOutlet.dispose();
+    this.overlayRef = this.overlay.create({});
   }
 
   toggleDescriptionEditor(): void {
     this.descriptionEditorIsOpen = !this.descriptionEditorIsOpen;
 
     if (this.descriptionEditorIsOpen) {
-      this.portalOutlet.attach(this.editorPortal);
+      this.overlayRef.attach(this.editorPortal);
     } else {
-      this.portalOutlet.detach();
+      this.overlayRef.detach();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.overlayRef.detach();
+    this.overlayRef.dispose();
   }
 }

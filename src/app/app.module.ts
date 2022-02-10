@@ -9,6 +9,7 @@ import { CartItemDescriptionEditorComponent } from './components/cart-item-descr
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PortalModule } from '@angular/cdk/portal';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { PortalModule } from '@angular/cdk/portal';
     FormsModule,
     BrowserAnimationsModule,
     PortalModule,
+    OverlayModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
