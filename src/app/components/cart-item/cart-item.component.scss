@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  border: 1px solid black;
+  position: relative;
+}
+
+app-cart-item-description-editor {
+  position: absolute;
+  bottom: 80%;
+  left: 50%;
+  transform: translateX(-50%);
+}

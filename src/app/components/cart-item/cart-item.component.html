@@ -1,0 +1,7 @@
+{{ name }}
+<p>{{ description }}</p>
+<button (click)="toggleDescriptionEditor()">Edit description</button>
+<app-cart-item-description-editor
+  *ngIf="descriptionEditorIsOpen"
+  [(description)]="description"
+></app-cart-item-description-editor>
