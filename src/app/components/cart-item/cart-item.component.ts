@@ -23,6 +23,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-cart-item',
@@ -42,36 +43,26 @@ export class CartItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly overlay: Overlay,
-    private readonly elementRef: ElementRef
+    private readonly elementRef: ElementRef,
+    private readonly breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
     this.overlayRef = this.overlay.create({
-      positionStrategy: this.overlay
-        .position()
-        .flexibleConnectedTo(this.elementRef.nativeElement)
-        .withPositions([
-          {
-            originX: 'center',
-            originY: 'top',
-            overlayX: 'center',
-            overlayY: 'bottom',
-            offsetY: 10,
-          },
-          {
-            originX: 'end',
-            originY: 'top',
-            overlayX: 'start',
-            overlayY: 'top',
-          },
-        ]),
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
       hasBackdrop: true,
     });
 
     this.overlayRef.backdropClick().subscribe(() => {
       this.descriptionEditorIsOpen = false;
       this.overlayRef.detach();
+    });
+
+    this.breakpointObserver.observe(Breakpoints.XSmall).subscribe((state) => {
+      if (state.matches) {
+        this.setMobileStrategies();
+      } else {
+        this.setDesktopStrategies();
+      }
     });
   }
 
@@ -88,5 +79,40 @@ export class CartItemComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.overlayRef.detach();
     this.overlayRef.dispose();
+  }
+
+  private setDesktopStrategies(): void {
+    this.overlayRef.updatePositionStrategy(
+      this.overlay
+        .position()
+        .flexibleConnectedTo(this.elementRef.nativeElement)
+        .withPositions([
+          {
+            originX: 'center',
+            originY: 'top',
+            overlayX: 'center',
+            overlayY: 'bottom',
+            offsetY: 10,
+          },
+          {
+            originX: 'end',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+        ])
+    );
+
+    this.overlayRef.updateScrollStrategy(
+      this.overlay.scrollStrategies.reposition()
+    );
+  }
+
+  private setMobileStrategies(): void {
+    this.overlayRef.updatePositionStrategy(
+      this.overlay.position().global().centerHorizontally().centerVertically()
+    );
+
+    this.overlayRef.updateScrollStrategy(this.overlay.scrollStrategies.block());
   }
 }
