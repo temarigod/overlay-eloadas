@@ -58,6 +58,12 @@ export class CartItemComponent implements OnInit, OnDestroy {
             overlayY: 'bottom',
             offsetY: 10,
           },
+          {
+            originX: 'end',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
         ]),
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
     });
